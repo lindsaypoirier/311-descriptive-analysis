@@ -1,0 +1,279 @@
+---
+title: "Mapping"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Mapping
+
+```{r}
+library(tidyverse)
+library(leaflet)
+library(lubridate)
+library(viridis)
+```
+
+In this tutorial, we are going to learn how to map with leaflet - an Open Source javascript library for building Web mapping applications. We are going to build a map from the dataset we were working with earlier today one component at a time. In this sense, this Notebook can serve as a reference for rendering future maps in R. For more detail and documentation, see [this site](https://rstudio.github.io/leaflet/). 
+
+To start, let's initiate the map by calling leaflet(), setting the View, and adding some Provider Tiles. Run the code below.
+
+```{r}
+leaflet() %>%
+  setView(lat = 40.7, lng = -100.0, zoom = 3) %>%
+  addProviderTiles("OpenStreetMap")
+```
+
+Provider tiles designate how the base map will appear. Above, we usee OpenStreetMap, a popular open source map, as our base map. However, we can also swap out this base map for other basemaps. See how the map changes when we run the code below. 
+
+```{r}
+leaflet() %>%
+  setView(lat = 40.7, lng = -100.0, zoom = 3) %>%
+  addProviderTiles("CartoDB.Positron")
+
+leaflet() %>%
+  setView(lat = 40.7, lng = -100.0, zoom = 3) %>%
+  addProviderTiles("Esri.NatGeoWorldMap")
+
+leaflet() %>%
+  setView(lat = 40.7, lng = -100.0, zoom = 3) %>%
+  addProviderTiles("Stamen.Toner")
+
+```
+
+
+What if I wanted to center this on San Francisco? How could I find the right coordinates? What zoom level would be most appropriate?
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("OpenStreetMap")
+```
+
+Now let's add our affordable housing data to this map, creating markers for each of the projects. We will do this using addMarkers() and referencing our dataframe. How did leaflet know where to place the markers?
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("OpenStreetMap") %>%
+  addMarkers(data = affordable_housing_sf)
+```
+
+Let's add labels for each of these markers so that we know what they refer to when we hover over them. 
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("OpenStreetMap") %>%
+  addMarkers(data = affordable_housing_sf,
+             label = ~project_name)
+```
+
+There are so many markers on this map that it can be a bit difficult to make sense of what we are seeing. In leaflet, you have the option to cluster markers. Let's turn this option on and see what it does to our map.
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("OpenStreetMap") %>%
+  addMarkers(data = affordable_housing_sf,
+             label = ~project_name, 
+             clusterOptions = markerClusterOptions())
+```
+
+Markers are limited to showing us the location of points on our map. What if we wanted to visualize more information about each of these points? To start this, we are going to convert the Markers to CircleMarkers.
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("OpenStreetMap") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = ~2, #sets size of circle
+             stroke = FALSE, #removes the outline
+             color = '#5a309b', #sets the color
+             fillOpacity = 0.8 #sets the opacity
+             )
+```
+
+It can be challenging to make out the markers on the Open Street Map base map because there are so many other colors on the map. Let's change the base map to one with fewer colors. CartoDB.Positron is a good option for this because it is in greyscale. 
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = ~2, #sets size of circle
+             stroke = FALSE, #removes the outline
+             color = '#5a309b', #sets the color
+             fillOpacity = 0.8 #sets the opacity
+             )
+```
+
+
+Now begin to visualize more data on the map by coloring the circle markers according to a numeric variable in our dataset. To do this, we are first going to create a color palette, which will indicate a gradient of colors to represent on the map. Here we are going to create a gradient of reds, starting at 1 and ranging to the max of number of affording uints in the dataset. Note that there are a number of different R packages that allow you to create color palettes, including [RColorBrewer](https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf) and [viridis](https://cran.r-project.org/web/packages/viridis/index.html).
+
+```{r}
+pal_num <- colorNumeric(palette="Reds", domain = c(1:max(affordable_housing_sf$affordable_units)))
+```
+
+Then we will change the color of the circles in our previous map to a numeric variable (affordable_units) in our datset, wrapped wtih the palette. 
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = 4, 
+             stroke = FALSE,
+             color = ~pal_num(affordable_units),
+             fillOpacity = 0.8 )
+```
+
+Let's also add a legend to our map so that we know what these colors refer to. With this information can you tell where are the most affordable units are planned?
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = 4, 
+             stroke = FALSE,
+             color = ~pal_num(affordable_units),
+             fillOpacity = 0.8 ) %>%
+  addLegend(title = "Affordable Units", pal = pal_num, values = c(1:max(affordable_housing_sf$affordable_units)), position = "bottomright")
+```
+
+Above the color of each circle corresponds to the exact number in affordable_units represented in that observation; this is just one way to divide colors in leaflet. We can also divide the values in our dataset into a designated number of bins. Below we divide the values in our dataset into 7 bins - each with a different color along the gradient. How does this map differ from the previous map?
+
+```{r}
+pal_bin <- colorBin(palette="Reds", domain = c(1:max(affordable_housing_sf$affordable_units)), bins = 7)
+
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = 4, 
+             stroke = FALSE,
+             color = ~pal_bin(affordable_units),
+             fillOpacity = 0.8 ) %>%
+  addLegend(title = "Affordable Units", pal = pal_bin, values = c(1:max(affordable_housing_sf$affordable_units)), position = "bottomright")
+
+```
+
+Finally, we can bin our data by a function called quantiles. In this case, instead of dividing the values into a certain number of *equal interval bins*, we can divide an *equal number of observations* into a specificed number of bins. In other words, with colorBin, each bin is equal in interval, while with colorQuantile, each bin is equal in number of observations. What's the difference betwen the plot above and the plot below? Why/when would we use quantiles instead of bins?
+
+```{r}
+pal_quant <- colorQuantile(palette="Reds", domain = c(1:max(affordable_housing_sf$affordable_units)), n = 6)
+
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = 4, 
+             stroke = FALSE,
+             color = ~pal_quant(affordable_units),
+             fillOpacity = 0.8 ) %>%
+  addLegend(title = "Affordable Units", pal = pal_quant, values = c(1:max(affordable_housing_sf$affordable_units)), position = "bottomright")
+```
+
+What if we wanted to visualize a categorical variable on the map instead of a numeric variable. To do this we would need to set up a categorical color palette, using colorFactor. We will use the viridis package to create this palette. To specify a palette with the viridis package, we need to call viridis and then specify the number of colors in the palette (e.g. viridis(7)). Below we specify that the number of colors in the palette should be equal to the number of unique values in the variable we wish to color the plot by. The domain, then, is those unique values. Are there certain areas in the city where there are more projects in the preliminary phase?
+
+```{r}
+pal_cat <- colorFactor(palette = viridis(length(unique(affordable_housing_sf$project_status))), domain = unique(affordable_housing_sf$project_status))
+
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = 4, #sets size of circle
+             stroke = FALSE,
+             color = ~pal_cat(project_status),
+             fillOpacity = 0.8 ) %>%
+    addLegend(title = "Project Status", pal = pal_cat, values = unique(affordable_housing_sf$project_status), position = "bottomright")
+
+```
+
+All of the functions above allowed us to visualize *point* data, but what if we wanted to visualize affordable housing by neighborhoods, supervisor districts, or zip codes in San Francisco. To do this, we would need a shapefile with polygons representing these geographic boundaries. A popular package for importing and working with shapefiles in R is sf. Below we import a shapefile of planning neighborhoods using the sf package.
+
+```{r}
+library(sf)
+sf_planning_neighborhoods <- st_read("https://data.sfgov.org/resource/xfcw-9evu.geojson")
+```
+We can place these polygons on our map via addPolygons. 
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = sf_planning_neighborhoods)
+```
+
+Just like we did with markers above, let's adjust the aesthetics of these polygons.
+
+```{r}
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = sf_planning_neighborhoods, 
+              fillColor = '#cccccc', #fill color of the polygon
+              fillOpacity = 0.8, #fill opacity of the polygon
+              color = "#444444", #color of the outline
+              weight = 1, #weight of the outline
+              smoothFactor = 0.5 #how much to smooth out the lines in teh polygons
+              )
+```
+
+Now let's join our original dataset to this new dataset so that we can map our data according to this geometry. 
+There are a number of different neighborhood shapefiles on the SF Open Data Portal. This is not uncommon. Different city agencies have different ways of dividing up a city. Further, different community groups may have different ways of dividing up a city, and none of this accounts for real estate/development companies, who can have profit-based incentives to redefine the boundaries of neighborhoods as communities gentrify. 
+
+The closest to the neighborhoods in our dataset is called Analysis Neighborhoods, but the names of the neighborhoods across these two datasets still don't entirely match. Because of this, we will not join by the name of the neighborhood, but instead by their shared geometry (every lat/long that is inside the polygon). 
+
+```{r}
+#Convert affordable_housing_sf to an sf object so that we can join it to the neighborhoods shapefile
+affordable_housing_sf_sf <- st_as_sf(affordable_housing_sf, coords = c("longitude", "latitude"), crs = 4326)
+
+#Join names and shapes from sf_planning_neighborhoods points to points from affordable_housing_sf when those points are in the shape
+affordable_housing_sf_joined <- st_join(affordable_housing_sf_sf, sf_planning_neighborhoods, join = st_within)
+
+#Calculate the number of affordable units in each neighborhood
+affordable_units_in_neighborhood <- 
+  as_tibble(affordable_housing_sf_joined) %>% 
+  group_by(nhood) %>% 
+  summarize(affordable_units = sum(affordable_units), .groups = 'drop') %>%
+  ungroup()
+
+#Join the calculated affordable units per neighborhood back to the sf_planning_neighborhoods shapefile
+affordable_units_in_neighborhood_sf <- left_join(sf_planning_neighborhoods, affordable_units_in_neighborhood)
+```
+
+Now using similar strategies as above we will color the map by the number of affordable units planned for the neighborhood. 
+
+```{r}
+pal_bin <- colorBin(palette="Reds", domain = affordable_units_in_neighborhood_sf$affordable_units, bins = 10)
+
+leaflet() %>%
+  setView(lat = 37.7749, lng = -122.4194, zoom = 11) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = affordable_units_in_neighborhood_sf, 
+              label = ~nhood,
+              fillColor = ~pal_bin(affordable_units), #fill color of the polygon
+              fillOpacity = 0.8, #fill opacity of the polygon
+              color = "#444444", #color of the outline
+              weight = 1, #weight of the outline
+              smoothFactor = 0.5 #how much to smooth out the lines in teh polygons
+              ) %>%
+  addLegend(title = "Affordable Units", pal = pal_bin, values = affordable_units_in_neighborhood_sf$affordable_units, position = "bottomright") %>%
+  addCircleMarkers(data = affordable_housing_sf,
+             label = ~project_name,
+             radius = ~2, #sets size of circle
+             stroke = FALSE, #removes the outline
+             color = '#5a309b', #sets the color
+             fillOpacity = 0.8 #sets the opacity
+             )
+```

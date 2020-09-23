@@ -1750,50 +1750,15 @@ summary {
 
 <!-- rnb-text-begin -->
 <p>You will need to leverage a number of R packages when working with this Notebook. You can add these packages by entering the following line in your Console: install.packages(c(“tidyverse”,“leaflet”,“lubridate”,“esquisse”,“viridis”,“sf”))</p>
+<p>install.packages(“esquisse”)</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGxlYWZsZXQpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmxpYnJhcnkodmlyaWRpcylcbmBgYCJ9 -->
+<pre class="r"><code>library(tidyverse)
+library(leaflet)
+library(lubridate)
+library(viridis)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4wIOKUgOKUgFxu4pyTIGdncGxvdDIgMy4zLjEgICAgIOKckyBwdXJyciAgIDAuMy40XG7inJMgdGliYmxlICAzLjAuMSAgICAg4pyTIGRwbHlyICAgMS4wLjBcbuKckyB0aWR5ciAgIDEuMS4wICAgICDinJMgc3RyaW5nciAxLjQuMFxu4pyTIHJlYWRyICAgMS4zLjEgICAgIOKckyBmb3JjYXRzIDAuNS4wXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG54IGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbnggZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxuIn0= -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
-✓ ggplot2 3.3.1     ✓ purrr   0.3.4
-✓ tibble  3.0.1     ✓ dplyr   1.0.0
-✓ tidyr   1.1.0     ✓ stringr 1.4.0
-✓ readr   1.3.1     ✓ forcats 0.5.0
-── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShsZWFmbGV0KVxuYGBgIn0= -->
-<pre class="r"><code>library(leaflet)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2h0bWx3aWRnZXRzJzpcbiAgbWV0aG9kICAgICAgICAgICBmcm9tICAgICAgICAgXG4gIHByaW50Lmh0bWx3aWRnZXQgdG9vbHM6cnN0dWRpb1xuIn0= -->
-<pre><code>Registered S3 method overwritten by &#39;htmlwidgets&#39;:
-  method           from         
-  print.htmlwidget tools:rstudio</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShsdWJyaWRhdGUpXG5gYGAifQ== -->
-<pre class="r"><code>library(lubridate)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYbHVicmlkYXRl4oCZXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0cyBhcmUgbWFza2VkIGZyb20g4oCYcGFja2FnZTpiYXNl4oCZOlxuXG4gICAgZGF0ZSwgaW50ZXJzZWN0LCBzZXRkaWZmLCB1bmlvblxuIn0= -->
-<pre><code>
-Attaching package: ‘lubridate’
-
-The following objects are masked from ‘package:base’:
-
-    date, intersect, setdiff, union</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh2aXJpZGlzKVxuYGBgIn0= -->
-<pre class="r"><code>library(viridis)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiB2aXJpZGlzTGl0ZVxuIn0= -->
-<pre><code>Loading required package: viridisLite</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="data-loading" class="section level2">
@@ -1856,7 +1821,7 @@ affordable_housing_sf$entitlement_approval &lt;- ymd_hms(affordable_housing_sf$e
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKCllvdSB3aWxsIG5lZWQgdG8gbGV2ZXJhZ2UgYSBudW1iZXIgb2YgUiBwYWNrYWdlcyB3aGVuIHdvcmtpbmcgd2l0aCB0aGlzIE5vdGVib29rLiBZb3UgY2FuIGFkZCB0aGVzZSBwYWNrYWdlcyBieSBlbnRlcmluZyB0aGUgZm9sbG93aW5nIGxpbmUgaW4geW91ciBDb25zb2xlOgppbnN0YWxsLnBhY2thZ2VzKGMoInRpZHl2ZXJzZSIsImxlYWZsZXQiLCJsdWJyaWRhdGUiLCJlc3F1aXNzZSIsInZpcmlkaXMiLCJzZiIpKQoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGxlYWZsZXQpCmxpYnJhcnkobHVicmlkYXRlKQpsaWJyYXJ5KHZpcmlkaXMpCmBgYAoKIyMgRGF0YSBMb2FkaW5nCgpgYGB7cn0KYWZmb3JkYWJsZV9ob3VzaW5nX3NmIDwtIHJlYWQuY3N2KCJodHRwczovL2RhdGEuc2Znb3Yub3JnL3Jlc291cmNlL2FheHctMmNiOC5jc3YiKQoKYGBgCgojIyBEYXRhIENsZWFuaW5nCgpgYGB7cn0KI0NvbnZlcnQgTkFzCmlzLm5hKGFmZm9yZGFibGVfaG91c2luZ19zZikgPC0gYWZmb3JkYWJsZV9ob3VzaW5nX3NmID09ICIiCgojQ29udmVydCBkYXRlcwphZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2Zfbm90aWNlX3RvX3Byb2NlZWQgPC0geW1kX2htcyhhZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2Zfbm90aWNlX3RvX3Byb2NlZWQpCmFmZm9yZGFibGVfaG91c2luZ19zZiRpc3N1YW5jZV9vZl9idWlsZGluZ19wZXJtaXQgPC0geW1kX2htcyhhZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2ZfYnVpbGRpbmdfcGVybWl0KQphZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2ZfZmlyc3RfY29uc3RydWN0aW9uX2RvY3VtZW50IDwtIHltZF9obXMoYWZmb3JkYWJsZV9ob3VzaW5nX3NmJGlzc3VhbmNlX29mX2ZpcnN0X2NvbnN0cnVjdGlvbl9kb2N1bWVudCkKYWZmb3JkYWJsZV9ob3VzaW5nX3NmJGVzdGltYXRlZF9hY3R1YWxfY29uc3RydWN0aW9uX3N0YXJ0X2RhdGUgPC0geW1kX2htcyhhZmZvcmRhYmxlX2hvdXNpbmdfc2YkZXN0aW1hdGVkX2FjdHVhbF9jb25zdHJ1Y3Rpb25fc3RhcnRfZGF0ZSkKYWZmb3JkYWJsZV9ob3VzaW5nX3NmJGVzdGltYXRlZF9jb25zdHJ1Y3Rpb25fY29tcGxldGlvbiA8LSB5bWRfaG1zKGFmZm9yZGFibGVfaG91c2luZ19zZiRlc3RpbWF0ZWRfY29uc3RydWN0aW9uX2NvbXBsZXRpb24pCmFmZm9yZGFibGVfaG91c2luZ19zZiRlbnRpdGxlbWVudF9hcHByb3ZhbCA8LSB5bWRfaG1zKGFmZm9yZGFibGVfaG91c2luZ19zZiRlbnRpdGxlbWVudF9hcHByb3ZhbCkKYGBgCgpSdW46IAplc3F1aXNzZTo6ZXNxdWlzc2VyKCkKCiMjIERlc2NyaXB0aXZlIERhdGEgQW5hbHlzaXMgUGxvdHMKCi8vV3JpdGUgeW91ciBmaXJzdCBxdWVzdGlvbiBoZXJlLgoKYGBge3J9CiNDb3B5IHlvdXIgZmlyc3QgcGxvdCBoZXJlCmBgYAoKLy9Xcml0ZSB5b3VyIHNlY29uZCBxdWVzdGlvbiBoZXJlLgoKYGBge3J9CiNDb3B5IHlvdXIgc2Vjb25kIHBsb3QgaGVyZQpgYGAKCi8vV3JpdGUgeW91ciB0aGlyZCBxdWVzdGlvbiBoZXJlLgoKYGBge3J9CiNDb3B5IHlvdXIgdGhpcmQgcGxvdCBoZXJlCmBgYAoKCgoKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKCllvdSB3aWxsIG5lZWQgdG8gbGV2ZXJhZ2UgYSBudW1iZXIgb2YgUiBwYWNrYWdlcyB3aGVuIHdvcmtpbmcgd2l0aCB0aGlzIE5vdGVib29rLiBZb3UgY2FuIGFkZCB0aGVzZSBwYWNrYWdlcyBieSBlbnRlcmluZyB0aGUgZm9sbG93aW5nIGxpbmUgaW4geW91ciBDb25zb2xlOgppbnN0YWxsLnBhY2thZ2VzKGMoInRpZHl2ZXJzZSIsImxlYWZsZXQiLCJsdWJyaWRhdGUiLCJlc3F1aXNzZSIsInZpcmlkaXMiLCJzZiIpKQoKaW5zdGFsbC5wYWNrYWdlcygiZXNxdWlzc2UiKQoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGxlYWZsZXQpCmxpYnJhcnkobHVicmlkYXRlKQpsaWJyYXJ5KHZpcmlkaXMpCmBgYAoKIyMgRGF0YSBMb2FkaW5nCgpgYGB7cn0KYWZmb3JkYWJsZV9ob3VzaW5nX3NmIDwtIHJlYWQuY3N2KCJodHRwczovL2RhdGEuc2Znb3Yub3JnL3Jlc291cmNlL2FheHctMmNiOC5jc3YiKQoKYGBgCgojIyBEYXRhIENsZWFuaW5nCgpgYGB7cn0KI0NvbnZlcnQgTkFzCmlzLm5hKGFmZm9yZGFibGVfaG91c2luZ19zZikgPC0gYWZmb3JkYWJsZV9ob3VzaW5nX3NmID09ICIiCgojQ29udmVydCBkYXRlcwphZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2Zfbm90aWNlX3RvX3Byb2NlZWQgPC0geW1kX2htcyhhZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2Zfbm90aWNlX3RvX3Byb2NlZWQpCmFmZm9yZGFibGVfaG91c2luZ19zZiRpc3N1YW5jZV9vZl9idWlsZGluZ19wZXJtaXQgPC0geW1kX2htcyhhZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2ZfYnVpbGRpbmdfcGVybWl0KQphZmZvcmRhYmxlX2hvdXNpbmdfc2YkaXNzdWFuY2Vfb2ZfZmlyc3RfY29uc3RydWN0aW9uX2RvY3VtZW50IDwtIHltZF9obXMoYWZmb3JkYWJsZV9ob3VzaW5nX3NmJGlzc3VhbmNlX29mX2ZpcnN0X2NvbnN0cnVjdGlvbl9kb2N1bWVudCkKYWZmb3JkYWJsZV9ob3VzaW5nX3NmJGVzdGltYXRlZF9hY3R1YWxfY29uc3RydWN0aW9uX3N0YXJ0X2RhdGUgPC0geW1kX2htcyhhZmZvcmRhYmxlX2hvdXNpbmdfc2YkZXN0aW1hdGVkX2FjdHVhbF9jb25zdHJ1Y3Rpb25fc3RhcnRfZGF0ZSkKYWZmb3JkYWJsZV9ob3VzaW5nX3NmJGVzdGltYXRlZF9jb25zdHJ1Y3Rpb25fY29tcGxldGlvbiA8LSB5bWRfaG1zKGFmZm9yZGFibGVfaG91c2luZ19zZiRlc3RpbWF0ZWRfY29uc3RydWN0aW9uX2NvbXBsZXRpb24pCmFmZm9yZGFibGVfaG91c2luZ19zZiRlbnRpdGxlbWVudF9hcHByb3ZhbCA8LSB5bWRfaG1zKGFmZm9yZGFibGVfaG91c2luZ19zZiRlbnRpdGxlbWVudF9hcHByb3ZhbCkKYGBgCgpSdW46IAplc3F1aXNzZTo6ZXNxdWlzc2VyKCkKCiMjIERlc2NyaXB0aXZlIERhdGEgQW5hbHlzaXMgUGxvdHMKCi8vV3JpdGUgeW91ciBmaXJzdCBxdWVzdGlvbiBoZXJlLgoKYGBge3J9CiNDb3B5IHlvdXIgZmlyc3QgcGxvdCBoZXJlCmBgYAoKLy9Xcml0ZSB5b3VyIHNlY29uZCBxdWVzdGlvbiBoZXJlLgoKYGBge3J9CiNDb3B5IHlvdXIgc2Vjb25kIHBsb3QgaGVyZQpgYGAKCi8vV3JpdGUgeW91ciB0aGlyZCBxdWVzdGlvbiBoZXJlLgoKYGBge3J9CiNDb3B5IHlvdXIgdGhpcmQgcGxvdCBoZXJlCmBgYAoKCgoKCg==</div>
 
 
 

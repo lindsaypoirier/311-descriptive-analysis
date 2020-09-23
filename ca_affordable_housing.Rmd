@@ -9,6 +9,8 @@ editor_options:
 You will need to leverage a number of R packages when working with this Notebook. You can add these packages by entering the following line in your Console:
 install.packages(c("tidyverse","leaflet","lubridate","esquisse","viridis","sf"))
 
+install.packages("esquisse")
+
 ```{r}
 library(tidyverse)
 library(leaflet)
